@@ -1,0 +1,40 @@
+.dashnav-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 10px 20px;
+  align-items: center;
+  background-color: rgb(182, 146, 194);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  --icon-color: #000000; /* Default icon color */
+  
+}
+
+.home-link,
+.about-link,
+.contact-link {
+  text-decoration: none;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+}
+
+.icon-button {
+  color: var(--icon-color); /* Use the CSS variable for icon color */
+}
+
+.home-link .MuiSvgIcon-root,
+.about-link .MuiSvgIcon-root,
+.contact-link .MuiSvgIcon-root {
+  font-size: 1.5rem;
+}
+
+.about-link, .contact-link {
+  color: var(--text-color); /* Use the CSS variable for text color */
+}
+
+.about-link:hover,
+.contact-link:hover,
+.home-link:hover {
+  text-decoration: underline;
+}

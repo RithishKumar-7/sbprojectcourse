@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.contact-us {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.contact {
+  flex: 1;
+  padding: 40px 20px;
+  background-color: rgb(245, 245, 245); /* Light background color for the contact section */
+}
+
+.contact-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-info {
+  background: rgba(255, 255, 255, 0.95); /* Slightly more opaque background */
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 600px; /* Max width for the contact form */
+}
+
+.contact-heading {
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.contact-description {
+  margin-bottom: 30px;
+  text-align: center;
+  font-family: 'Work Sans', sans-serif;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-input {
+  margin-bottom: 20px;
+}
+
+.contact-button {
+  margin-top: 10px;
+}
