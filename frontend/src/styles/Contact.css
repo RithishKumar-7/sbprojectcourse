@@ -1,0 +1,104 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Contact Section */
+.contact {
+  background-color: #fff;
+  padding: 40px 20px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.contact-content {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+.contact-info {
+  margin-bottom: 30px;
+}
+
+.contact-heading {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 700; /* Bold font weight */
+}
+
+.contact-description {
+  font-size: 1.125rem;
+  color: #666;
+  margin-bottom: 20px;
+  font-weight: 400; /* Normal weight for body text */
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-form .MuiTextField-root {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.contact-button {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 10px 30px;
+  background-color: #694F8E;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600; /* Bold font weight for the button */
+  transition: background-color 0.3s;
+}
+
+.contact-button:hover {
+  background-color: #4a3561;
+}
+
+/* Additional Styles */
+a {
+  color: #694F8E;
+  text-decoration: none;
+  font-weight: 600; /* Bold font weight for links */
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact-form {
+    padding-left: 0;
+  }
+
+  .contact-heading {
+    font-size: 2rem;
+  }
+
+  .contact-description {
+    font-size: 1rem;
+  }
+}
