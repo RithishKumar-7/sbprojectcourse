@@ -1,0 +1,173 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.Home {
+  font-family: "Inter", sans-serif;
+  color: #694F8E;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Hero Section */
+.hero-bg {
+  background-color: white;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  flex-direction: row;
+}
+
+.hero-img img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+
+.hero-content {
+  max-width: 600px;
+  text-align: left;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.dashnavlol {
+  margin-top: 20px;
+}
+
+.dashnavlolbutton, .logouthome {
+  margin: 10px 0;
+}
+
+.logouthome {
+  color: #FFFFFF;
+}
+
+/* Feature Section */
+.feature {
+  display: flex;
+  flex-direction: column;
+}
+
+.featlol {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  max-width: 100vw;
+  padding: 20px;
+  box-sizing: border-box;
+  color: black;
+  scroll-snap-align: start;
+  scroll-snap-type: y mandatory;
+}
+
+/* Individual Feature Backgrounds */
+.featlol:nth-child(1) {
+  background-color: rgb(226, 218, 214); /* Background color for first feature */
+}
+
+.featlol:nth-child(2) {
+  background-color: rgb(255, 198, 198); /* Background color for second feature */
+}
+
+.featlol:nth-child(3) {
+  background-color: rgb(149, 210, 179); /* Background color for third feature */
+}
+
+.featlol:nth-child(4) {
+  background-color: #1E1E1E; /* Background color for the new feature */
+}
+
+.content-1 {
+  max-width: 600px;
+  text-align: left;
+  margin-right: 20px;
+}
+
+.content-1 h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.contlist h5 {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.content-img img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Divider lines */
+.line, .line-2 {
+  background-color: #ffdfd6d9;
+  height: 1px;
+  width: 100%;
+}
+
+.line {
+  margin-top: 20px;
+}
+
+.line-2 {
+  margin-top: 10px;
+}
+
+/* Additional Styles */
+a {
+  color: #694F8E;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Smooth Scroll and Full Page Layout */
+html, body {
+  scroll-behavior: smooth; /* Smooth scrolling */
+  height: 100%;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .hero-img img {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .featlol {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .content-img {
+    margin-top: 20px;
+  }
+}
