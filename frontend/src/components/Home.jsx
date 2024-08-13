@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Button } from '@mui/material';
-import illustration from '../Asserts/images/scheduling-4.jpg'; 
-import newIllustration from '../Asserts/images/schedule--1.jpg'; 
-import anotherIllustration from '../Asserts/images/scheduling.jpg'; 
-import additionalIllustration from '../Asserts/images/wbackground.png'; // Import the new image
+import illustration from '../assets/scheduling-4.jpg'; 
+import newIllustration from '../assets/schedule--1.jpg'; 
+import anotherIllustration from '../assets/scheduling.jpg'; 
+import additionalIllustration from '../assets/wbackground.png'; // Import the new image
 import '../styles/Home.css'; 
-import Navbar from './NavBar';
+import Navbar from './Navbar';
 import Footer from './Footer';
 
 const Home = ({ user, onLogout }) => {

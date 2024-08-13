@@ -1,41 +1,86 @@
 import React, { useState, useEffect } from 'react';
-import SidePanel from '../AdminSidePanel'; // Corrected import path
-import { Box, Card, CardContent, Typography, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper } from '@mui/material';
-
-// Sample data for demonstration
-const sampleData = {
-  HR: 5,
-  ProductManagers: 3,
-  Employees: 80,
-  TeamLeads: 4,
-};
-
-// Sample user list
-const userList = [
-  { id: 1, name: 'John Doe', role: 'HR', email: 'john.doe@example.com' },
-  { id: 2, name: 'Jane Smith', role: 'Employee', email: 'jane.smith@example.com' },
-  // Add more sample users as needed
-];
+import SidePanel from '../AdminSidePanel';
+import { Box, Card, CardContent, Typography, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Paper, TextField, Modal, IconButton } from '@mui/material';
+import axios from 'axios';
+import CloseIcon from '@mui/icons-material/Close';
 
 const ManageUsers = () => {
-  const [userStats, setUserStats] = useState({});
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState('');
+  const [open, setOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [editUser, setEditUser] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    role: '',
+    username:'',
+    company:'',
+  });
 
   useEffect(() => {
-    // Simulate fetching data from an API or database
-    setUserStats(sampleData);
-    setUsers(userList);
+    // Fetch list of users
+    const fetchData = async () => {
+      try {
+        const usersResponse = await axios.get('http://localhost:8080/api/admin/users'); // Ensure this endpoint is correct
+        setUsers(usersResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
   }, []);
 
-  const handleEdit = (userId) => {
-    // Handle edit functionality here
-    console.log('Edit user with ID:', userId);
+  const handleEdit = (user) => {
+    setSelectedUser(user);
+    setEditUser({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      username: user.username,
+      company: user.company,
+    });
+    setOpen(true);
   };
 
-  const handleDelete = (userId) => {
-    // Handle delete functionality here
-    console.log('Delete user with ID:', userId);
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedUser(null);
   };
+
+  const handleSave = async () => {
+    if (!selectedUser) {
+      console.warn('No user selected for editing');
+      return;
+    }
+  
+    try {
+      console.log('Saving user:', selectedUser.id, editUser);
+      await axios.put(`http://localhost:8080/api/admin/users/${selectedUser.id}`, editUser);
+      setUsers(users.map(user => (user.id === selectedUser.id ? { ...user, ...editUser } : user)));
+      handleClose();
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
+  
+  const handleDelete = async (userId) => {
+    try {
+      console.log('Deleting user:', userId);
+      await axios.delete(`http://localhost:8080/api/admin/users/delete/${userId}`);
+      setUsers(users.filter(user => user.id !== userId)); // Update state after deletion
+      console.log('User deleted successfully');
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+  
+
+  const filteredUsers = users.filter(user =>
+    `${user.firstName} ${user.lastName}`.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div>
@@ -45,22 +90,14 @@ const ManageUsers = () => {
           Manage Users
         </Typography>
 
-        <Grid container spacing={3}>
-          {Object.entries(userStats).map(([role, count]) => (
-            <Grid item xs={12} sm={6} md={3} key={role}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" component="div">
-                    {role}
-                  </Typography>
-                  <Typography variant="h4" color="text.secondary">
-                    {count} Users
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        <TextField
+          label="Search Users"
+          variant="outlined"
+          fullWidth
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          sx={{ mb: 4 }}
+        />
 
         <Box sx={{ mt: 4 }}>
           <Typography variant="h5" gutterBottom>
@@ -77,14 +114,14 @@ const ManageUsers = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.length > 0 ? (
-                  users.map((user) => (
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user) => (
                     <TableRow key={user.id}>
-                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{`${user.firstName} ${user.lastName}`}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.role}</TableCell>
                       <TableCell>
-                        <Button variant="contained" color="primary" onClick={() => handleEdit(user.id)} sx={{ mr: 1 }}>
+                        <Button variant="contained" color="primary" onClick={() => handleEdit(user)} sx={{ mr: 1 }}>
                           Edit
                         </Button>
                         <Button variant="outlined" color="error" onClick={() => handleDelete(user.id)}>
@@ -103,6 +140,76 @@ const ManageUsers = () => {
           </TableContainer>
         </Box>
       </Box>
+
+      <Modal open={open} onClose={handleClose}>
+        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+          <IconButton sx={{ position: 'absolute', top: 10, right: 10 }} onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+            Edit User
+          </Typography>
+          <TextField
+            label="First Name"
+            variant="outlined"
+            fullWidth
+            value={editUser.firstName}
+            onChange={(e) => setEditUser({ ...editUser, firstName: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Last Name"
+            variant="outlined"
+            fullWidth
+            value={editUser.lastName}
+            onChange={(e) => setEditUser({ ...editUser, lastName: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Company"
+            variant="outlined"
+            fullWidth
+            value={editUser.company}
+            onChange={(e) => setEditUser({ ...editUser, company: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Email"
+            variant="outlined"
+            fullWidth
+            value={editUser.email}
+            onChange={(e) => setEditUser({ ...editUser, email: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Username"
+            variant="outlined"
+            fullWidth
+            value={editUser.username}
+            onChange={(e) => setEditUser({ ...editUser, username: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Password"
+            variant="outlined"
+            fullWidth
+            value={editUser.password}
+            onChange={(e) => setEditUser({ ...editUser, password: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            label="Role"
+            variant="outlined"
+            fullWidth
+            value={editUser.role}
+            onChange={(e) => setEditUser({ ...editUser, role: e.target.value })}
+            sx={{ mb: 2 }}
+          />
+          <Button variant="contained" color="primary" onClick={handleSave}>
+            Save
+          </Button>
+        </Box>
+      </Modal>
     </div>
   );
 };

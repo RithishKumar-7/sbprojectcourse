@@ -1,8 +1,8 @@
 import React from 'react';
-import Navbar from './NavBar';
+import Navbar from './Navbar';
 import { Facebook, Twitter, Instagram } from '@mui/icons-material';
 import '../styles/About.css';
-import illustration from '../Asserts/images/eAboutus.jpg'; // Importing the image
+import illustration from '../assets/eAboutus.jpg'; // Importing the image
 import Footer from './Footer.jsx';
 
 const About = () => {

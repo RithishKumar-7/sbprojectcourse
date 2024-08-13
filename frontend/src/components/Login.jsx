@@ -1,22 +1,65 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import illustration from '../Asserts/images/wlogin.png'; // Ensure this path is correct
-import { Typography, TextField, Button, MenuItem } from '@mui/material';
 import '../styles/Login.css';
+import illustration from '../assets/wlogin.png';
+import { Typography, TextField, Button, FormControl } from '@mui/material';
+import axios from 'axios';
 
 const Login = ({ onLogin }) => {
-  const [form, setForm] = useState({ email: '', password: '', role: '' });
+  const [form, setForm] = useState({
+    username: '',
+    password: '',
+  });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const userInfo = { email: form.email, role: form.role };
-    onLogin(userInfo);
-    navigate('/'); // Redirect after form submission
+  
+    try {
+      const response = await axios.post('http://localhost:8080/api/auth/login', form, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      const { token, user } = response.data;
+  
+      const expirationTime = new Date().getTime() + 5000000; // Example expiration time
+
+      localStorage.setItem('username', user.username);
+      localStorage.setItem('expiration', expirationTime);
+      localStorage.setItem('role', user.role);
+      localStorage.setItem('id', user.id);
+      localStorage.setItem('data', JSON.stringify(user));
+      localStorage.setItem('token', token);
+
+      onLogin(user);
+  
+      switch (user.role) {
+        case 'admin':
+          navigate('/admin-dashboard');
+          break;
+        case 'employee':
+          navigate('/employee-dashboard');
+          break;
+        case 'team_lead':
+          navigate('/team-lead-dashboard');
+          break;
+        case 'product_manager':
+          navigate('/product-manager-dashboard');
+          break;
+        default:
+          navigate('/');
+      }
+    } catch (err) {
+      console.error("Login Error:", err);
+      setError('Login failed. Please check your credentials and try again.');
+    }
   };
 
   return (
@@ -30,60 +73,36 @@ const Login = ({ onLogin }) => {
           <Typography variant='h4' className='title'>
             <b>Login</b>
           </Typography>
+          {error && <Typography color="error" variant='body2' className='error-message'>{error}</Typography>}
           <form className='login-form' onSubmit={handleSubmit}>
-            <TextField
-              label='Email'
-              name='email'
-              type='email'
-              variant='outlined'
-              value={form.email}
-              onChange={handleChange}
-              className='login-input'
-              required
-              fullWidth
-            />
-            <TextField
-              label='Password'
-              name='password'
-              type='password'
-              variant='outlined'
-              value={form.password}
-              onChange={handleChange}
-              className='login-input'
-              required
-              fullWidth
-            />
-            <TextField
-              label='Role'
-              name='role'
-              select
-              variant='outlined'
-              value={form.role}
-              onChange={handleChange}
-              className='login-input'
-              required
-              fullWidth
-            >
-              <MenuItem value='admin'>Admin</MenuItem>
-              <MenuItem value='employee'>Employee</MenuItem>
-              <MenuItem value='team_lead'>Team Lead</MenuItem>
-              <MenuItem value='product_manager'>Product Manager</MenuItem>
-            </TextField>
-            <Button
-              type='submit'
-              variant='contained'
-              color='primary'
-              fullWidth
-              className='login-button'
-            >
+            <FormControl fullWidth variant="outlined" margin="normal">
+              <TextField
+                name='username'
+                type='text'
+                variant='outlined'
+                value={form.username}
+                onChange={handleChange}
+                required
+                label="Username"
+              />
+            </FormControl>
+            <FormControl fullWidth variant="outlined" margin="normal">
+              <TextField
+                name='password'
+                type='password'
+                variant='outlined'
+                value={form.password}
+                onChange={handleChange}
+                required
+                label="Password"
+              />
+            </FormControl>
+            <Button type="submit" variant="contained" color="primary" fullWidth id="login-button">
               Login
             </Button>
-            <Typography className='message'>
+            <Typography className="message">
               Don't have an account?{' '}
-              <span
-                style={{ color: 'blue', cursor: 'pointer' }}
-                onClick={() => navigate('/signup')}
-              >
+              <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => navigate('/signup')}>
                 Sign up
               </span>
             </Typography>

@@ -1,19 +1,28 @@
-// src/components/dashboards/ProductManagerDashboard/ProductManagerSidePanel.js
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mui/material';
-import { Home, Assignment, Schedule, Create,AccountCircle} from '@mui/icons-material';
+import { Home, Assignment, Schedule, Create, AccountCircle } from '@mui/icons-material';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
+
+const drawerWidth = 240;
 
 const ProductManagerSidePanel = () => {
   return (
     <Drawer
       sx={{
-        width: 240,
+        width: drawerWidth,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
-          width: 240,
+          width: drawerWidth,
           boxSizing: 'border-box',
+          backgroundColor: '#31363F', 
+        },
+        '& .MuiListItem-root': {
+          color: '#fff', 
+        },
+        '& .MuiListItemIcon-root': {
+          color: '#fff', 
         },
       }}
       variant="permanent"
@@ -45,7 +54,7 @@ const ProductManagerSidePanel = () => {
           <ListItemText primary="Profile" />
         </ListItem>
       </List>
-      <Divider />
+      <Divider sx={{ backgroundColor: '#444' }} /> 
     </Drawer>
   );
 };
